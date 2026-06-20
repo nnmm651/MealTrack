@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f7fd6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="MealTrack" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>MealTrack</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">MealTrack</p>
+          <h1 id="screenTitle">今日</h1>
+        </div>
+        <button class="icon-button" id="openBackupButton" type="button" aria-label="バックアップ">BK</button>
+      </header>
+
+      <main class="main-content">
+        <section class="view is-active" id="todayView" aria-labelledby="todayTitle">
+          <div class="date-strip">
+            <div>
+              <span class="label">記録日</span>
+              <strong id="todayLabel"></strong>
+            </div>
+            <button class="secondary-button" id="todayResetButton" type="button">今日へ</button>
+          </div>
+
+          <section class="summary-grid" aria-label="日別サマリー">
+            <div class="summary-item">
+              <span>カロリー</span>
+              <strong><output id="todayCalories">0</output> kcal</strong>
+            </div>
+            <div class="summary-item">
+              <span>タンパク質</span>
+              <strong><output id="todayProtein">0</output> g</strong>
+            </div>
+            <div class="summary-item">
+              <span>脂質</span>
+              <strong><output id="todayFat">0</output> g</strong>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="section-heading">
+              <h2 id="todayTitle">食事一覧</h2>
+              <button class="primary-button" id="addMealButton" type="button">追加</button>
+            </div>
+            <div class="meal-list" id="todayMealList"></div>
+          </section>
+
+          <section class="panel">
+            <label class="field-label" for="todayNote">備考</label>
+            <textarea id="todayNote" rows="5" placeholder="例: 今日は胸トレ&#10;ベンチプレス70kg×5"></textarea>
+          </section>
+        </section>
+
+        <section class="view" id="historyView" aria-labelledby="historyTitle">
+          <section class="panel">
+            <label class="field-label" for="historyDate">日付を選択</label>
+            <input id="historyDate" type="date" />
+          </section>
+          <section class="summary-grid" aria-label="履歴サマリー">
+            <div class="summary-item">
+              <span>カロリー</span>
+              <strong><output id="historyCalories">0</output> kcal</strong>
+            </div>
+            <div class="summary-item">
+              <span>タンパク質</span>
+              <strong><output id="historyProtein">0</output> g</strong>
+            </div>
+            <div class="summary-item">
+              <span>脂質</span>
+              <strong><output id="historyFat">0</output> g</strong>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="section-heading">
+              <h2 id="historyTitle">履歴</h2>
+              <button class="primary-button" id="addHistoryMealButton" type="button">追加</button>
+            </div>
+            <div class="meal-list" id="historyMealList"></div>
+          </section>
+          <section class="panel">
+            <label class="field-label" for="historyNote">備考</label>
+            <textarea id="historyNote" rows="5"></textarea>
+          </section>
+        </section>
+
+        <section class="view" id="templateView" aria-labelledby="templateTitle">
+          <section class="panel">
+            <div class="section-heading">
+              <h2 id="templateTitle">テンプレート</h2>
+              <button class="primary-button" id="addTemplateButton" type="button">追加</button>
+            </div>
+            <div class="template-list" id="templateList"></div>
+          </section>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="メインナビゲーション">
+        <button class="nav-button is-active" data-view="today" type="button">今日</button>
+        <button class="nav-button" data-view="history" type="button">履歴</button>
+        <button class="nav-button" data-view="template" type="button">テンプレート</button>
+      </nav>
+    </div>
+
+    <dialog id="mealDialog">
+      <form method="dialog" class="dialog-form" id="mealForm">
+        <div class="dialog-header">
+          <h2 id="mealDialogTitle">食事追加</h2>
+          <button class="icon-button" value="cancel" type="submit" aria-label="閉じる">×</button>
+        </div>
+        <label class="field-label" for="mealTemplate">テンプレート</label>
+        <select id="mealTemplate">
+          <option value="">選択しない</option>
+        </select>
+        <label class="field-label" for="mealTime">日時</label>
+        <input id="mealTime" type="datetime-local" required />
+        <label class="field-label" for="mealName">メニュー名</label>
+        <input id="mealName" type="text" required autocomplete="off" />
+        <div class="input-grid">
+          <label>
+            <span>カロリー</span>
+            <input id="mealCalories" type="number" min="0" step="1" inputmode="numeric" required />
+          </label>
+          <label>
+            <span>タンパク質</span>
+            <input id="mealProtein" type="number" min="0" step="0.1" inputmode="decimal" required />
+          </label>
+          <label>
+            <span>脂質</span>
+            <input id="mealFat" type="number" min="0" step="0.1" inputmode="decimal" required />
+          </label>
+        </div>
+        <menu class="dialog-actions">
+          <button class="secondary-button" value="cancel" type="submit">キャンセル</button>
+          <button class="primary-button" id="saveMealButton" value="default" type="submit">保存</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog id="templateDialog">
+      <form method="dialog" class="dialog-form" id="templateForm">
+        <div class="dialog-header">
+          <h2 id="templateDialogTitle">テンプレート追加</h2>
+          <button class="icon-button" value="cancel" type="submit" aria-label="閉じる">×</button>
+        </div>
+        <label class="field-label" for="templateName">メニュー名</label>
+        <input id="templateName" type="text" required autocomplete="off" />
+        <div class="input-grid">
+          <label>
+            <span>カロリー</span>
+            <input id="templateCalories" type="number" min="0" step="1" inputmode="numeric" required />
+          </label>
+          <label>
+            <span>タンパク質</span>
+            <input id="templateProtein" type="number" min="0" step="0.1" inputmode="decimal" required />
+          </label>
+          <label>
+            <span>脂質</span>
+            <input id="templateFat" type="number" min="0" step="0.1" inputmode="decimal" required />
+          </label>
+        </div>
+        <menu class="dialog-actions">
+          <button class="secondary-button" value="cancel" type="submit">キャンセル</button>
+          <button class="primary-button" value="default" type="submit">保存</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog id="backupDialog">
+      <form method="dialog" class="dialog-form" id="backupForm">
+        <div class="dialog-header">
+          <h2>バックアップ</h2>
+          <button class="icon-button" value="cancel" type="submit" aria-label="閉じる">×</button>
+        </div>
+        <p class="small-text">JSONで保存・復元できます。機種変更前にエクスポートしてください。</p>
+        <button class="primary-button full-button" id="exportButton" type="button">JSONエクスポート</button>
+        <label class="secondary-button full-button file-button" for="importFile">JSONインポート</label>
+        <input id="importFile" class="visually-hidden" type="file" accept="application/json,.json" />
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

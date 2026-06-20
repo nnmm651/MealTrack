@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="MealTrack icon">
+  <rect width="512" height="512" rx="104" fill="#0f7fd6"/>
+  <path d="M112 174h288v44H112zM112 294h288v44H112z" fill="#ffffff"/>
+  <path d="M158 128h52v256h-52zM302 128h52v256h-52z" fill="#bcefff"/>
+  <circle cx="256" cy="256" r="58" fill="#101820"/>
+  <path d="M228 253l22 22 42-56" fill="none" stroke="#ffffff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
